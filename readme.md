@@ -9,6 +9,14 @@ These ComfyUI nodes can be used to restore faces in images similar to the face r
 
 
 ## Installation
+
+Git clone this node to `ComfyUI/custom_nodes` folder:
+
+```bash
+cd ComfyUI/custom_nodes
+git clone https://github.com/mav-rik/facerestore_cf.git
+```
+
 If running the portable windows version of ComfyUI, run embedded_install.bat
 Windows users not running the portable version can run install.bat. Linux and mac users can run install.sh.
 If the install fails for whatever reason, you'll need to work out how to install opencv-python yourself (you'll get a cv2 not found error otherwise)
