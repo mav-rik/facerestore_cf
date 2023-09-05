@@ -5,6 +5,9 @@
 
 These ComfyUI nodes can be used to restore faces in images similar to the face restore option in AUTOMATIC1111 webui.
 
+![Example](./example.png)
+
+
 ## Installation
 If running the portable windows version of ComfyUI, run embedded_install.bat
 Windows users not running the portable version can run install.bat. Linux and mac users can run install.sh.
