@@ -17,7 +17,9 @@ from custom_nodes.facerestore_cf.facelib.detection.yolov5face.utils.general impo
     scale_coords_landmarks,
 )
 
-IS_HIGH_VERSION = True
+from torch import torch_version
+
+IS_HIGH_VERSION = torch_version.__version__ >= "1.9.0"
 
 
 def isListempty(inList):
