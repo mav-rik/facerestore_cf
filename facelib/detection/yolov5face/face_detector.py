@@ -17,8 +17,13 @@ from custom_nodes.facerestore_cf.facelib.detection.yolov5face.utils.general impo
     scale_coords_landmarks,
 )
 
-IS_HIGH_VERSION = tuple(map(int, torch.__version__.split('+')[0].split('.'))) >= (1, 9, 0)
-
+try:
+    version_str = torch.__version__.split('+')[0]
+    major, minor, patch = map(int, version_str.split('.'))
+    IS_HIGH_VERSION = (major, minor, patch) >= (1, 9, 0)
+except ValueError:
+    # Handle the case of a development version here
+    IS_HIGH_VERSION = False
 
 def isListempty(inList):
     if isinstance(inList, list): # Is a list
