@@ -4,6 +4,8 @@ import os.path as osp
 import torch
 from torch.hub import download_url_to_file, get_dir
 from urllib.parse import urlparse
+import folder_paths
+
 # from custom_nodes.facerestore_cf.basicsr.utils.download_util import download_file_from_google_drive
 #import gdown
 
@@ -96,6 +98,11 @@ def load_file_from_url(url, model_dir=None, progress=True, file_name=None):
     filename = os.path.basename(parts.path)
     if file_name is not None:
         filename = file_name
+    
+    model_path = folder_paths.get_full_path("facedetection_models", filename)
+    if model_path:
+        return model_path
+
     cached_file = os.path.abspath(os.path.join(ROOT_DIR, model_dir, filename))
     if not os.path.exists(cached_file):
         print(f'Downloading: "{url}" to {cached_file}\n')

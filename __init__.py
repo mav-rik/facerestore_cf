@@ -15,10 +15,11 @@ from custom_nodes.facerestore_cf.basicsr.utils.registry import ARCH_REGISTRY
 # import codeformer_arch
 
 dir_facerestore_models = os.path.join(folder_paths.models_dir, "facerestore_models")
-dir_facedetection = os.path.join(folder_paths.models_dir, "facedetection")
+dir_facedetection_models = os.path.join(folder_paths.models_dir, "facedetection")
 os.makedirs(dir_facerestore_models, exist_ok=True)
-os.makedirs(dir_facedetection, exist_ok=True)
+os.makedirs(dir_facedetection_models, exist_ok=True)
 folder_paths.folder_names_and_paths["facerestore_models"] = ([dir_facerestore_models], folder_paths.supported_pt_extensions)
+folder_paths.folder_names_and_paths["facedetection_models"] = ([dir_facedetection_models], folder_paths.supported_pt_extensions)
 
 def img2tensor(imgs, bgr2rgb=True, float32=True):
     """Numpy array to tensor.
