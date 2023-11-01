@@ -111,10 +111,11 @@ def tensor2img(tensor, rgb2bgr=True, out_type=np.uint8, min_max=(0, 1)):
 class FaceRestoreCFWithModel:
     @classmethod
     def INPUT_TYPES(s):
-        return {"required": { "facerestore_model": ("FACERESTORE_MODEL",),
+        return {"required": { "switch": ("BOOLEAN", { "default": False, "label_off": "OFF", "label_on": "ON"}),
+                              "facerestore_model": ("FACERESTORE_MODEL",),
                               "image": ("IMAGE",),
                               "facedetection": (["retinaface_resnet50", "retinaface_mobile0.25", "YOLOv5l", "YOLOv5n"],),
-                              "codeformer_fidelity": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1, "step": 0.05})
+                              "restore_fidelity": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1, "step": 0.05})
                               }}
 
     RETURN_TYPES = ("IMAGE",)
@@ -126,8 +127,11 @@ class FaceRestoreCFWithModel:
     def __init__(self):
         self.face_helper = None
 
-    def restore_face(self, facerestore_model, image, facedetection, codeformer_fidelity):
-        print(f'\tStarting restore_face with codeformer_fidelity: {codeformer_fidelity}')
+    def restore_face(self, switch, facerestore_model, image, facedetection, restore_fidelity):
+        if not switch:
+            return (image,)
+        
+        print(f'\tStarting restore_face with fidelity: {restore_fidelity}')
         device = model_management.get_torch_device()
         facerestore_model.to(device)
         if self.face_helper is None:
@@ -161,7 +165,7 @@ class FaceRestoreCFWithModel:
                     with torch.no_grad():
                         #output = facerestore_model(cropped_face_t, w=strength, adain=True)[0]
                         # output = facerestore_model(cropped_face_t)[0]
-                        output = facerestore_model(cropped_face_t, w=codeformer_fidelity)[0]
+                        output = facerestore_model(cropped_face_t, w=restore_fidelity)[0]
                         restored_face = tensor2img(output, rgb2bgr=True, min_max=(-1, 1))
                     del output
                     torch.cuda.empty_cache()
