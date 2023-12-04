@@ -114,8 +114,13 @@ class FaceRestoreCFWithModel:
         return {"required": { "facerestore_model": ("FACERESTORE_MODEL",),
                               "image": ("IMAGE",),
                               "facedetection": (["retinaface_resnet50", "retinaface_mobile0.25", "YOLOv5l", "YOLOv5n"],),
-                              "codeformer_fidelity": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1, "step": 0.05})
-                              }}
+                              "codeformer_fidelity": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1, "step": 0.05}),
+                              "blend_factor": ("FLOAT", {"default": 1, "min": 0.0, "max": 1, "step": 0.01}),
+                              "blend_factor_unmasked": ("FLOAT", {"default": 0, "min": 0.0, "max": 1, "step": 0.01}),
+                              "inverse_mask": ("BOOLEAN", {"default": False})
+                              },
+                "optional": {"mask": ("MASK",)}
+                }
 
     RETURN_TYPES = ("IMAGE",)
 
@@ -126,7 +131,9 @@ class FaceRestoreCFWithModel:
     def __init__(self):
         self.face_helper = None
 
-    def restore_face(self, facerestore_model, image, facedetection, codeformer_fidelity):
+    def restore_face(self, facerestore_model, image: torch.Tensor, facedetection, codeformer_fidelity: float,
+                     blend_factor: float, blend_factor_unmasked: float,
+                     mask: torch.Tensor = None, inverse_mask: bool = False):
         print(f'\tStarting restore_face with codeformer_fidelity: {codeformer_fidelity}')
         device = model_management.get_torch_device()
         facerestore_model.to(device)
@@ -178,16 +185,42 @@ class FaceRestoreCFWithModel:
             restored_img = restored_img[:, :, ::-1]
 
             if original_resolution != restored_img.shape[0:2]:
-                restored_img = cv2.resize(restored_img, (0, 0), fx=original_resolution[1]/restored_img.shape[1], fy=original_resolution[0]/restored_img.shape[0], interpolation=cv2.INTER_LINEAR)
+                restored_img = cv2.resize(restored_img, (0, 0),
+                                          fx=original_resolution[1]/restored_img.shape[1],
+                                          fy=original_resolution[0]/restored_img.shape[0],
+                                          interpolation=cv2.INTER_LINEAR)
+
+            cur_image_np = cv2.cvtColor(cur_image_np, cv2.COLOR_BGR2RGB)
+
+            if mask is not None:
+                mask_np = np.transpose(mask.cpu().numpy(), (1, 2, 0))
+                mask_np = np.repeat(mask_np, 3, axis=2)
+
+                # Masked blending
+                # Blending of masked parts
+                masked_image_1 = cur_image_np * (mask_np if not inverse_mask else 1 - mask_np)
+                masked_image_2 = restored_img * (mask_np if not inverse_mask else 1 - mask_np)
+                blended_image_1 = masked_image_1 * (1 - blend_factor) + masked_image_2 * blend_factor
+                blended_image_1 = np.clip(blended_image_1, 0, 255)
+                # Blending of unmasked parts
+                unmasked_image_1 = cur_image_np * ((1 - mask_np) if not inverse_mask else mask_np)
+                unmasked_image_2 = restored_img * ((1 - mask_np) if not inverse_mask else mask_np)
+                blended_image_2 = unmasked_image_1 * (1 - blend_factor_unmasked) + unmasked_image_2 * blend_factor_unmasked
+                blended_image_2 = np.clip(blended_image_2, 0, 255)
+
+                restored_img = blended_image_1 + blended_image_2
+            else:
+                # Blend
+                restored_img = cur_image_np * (1 - blend_factor) + restored_img * blend_factor
+                restored_img = np.clip(restored_img, 0, 255)
 
             self.face_helper.clean_all()
-
-            # restored_img = cv2.cvtColor(restored_face, cv2.COLOR_BGR2RGB)
 
             out_images[i] = restored_img
 
         restored_img_np = np.array(out_images).astype(np.float32) / 255.0
         restored_img_tensor = torch.from_numpy(restored_img_np)
+
         return (restored_img_tensor,)
 
 
