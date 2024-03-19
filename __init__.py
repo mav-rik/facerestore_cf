@@ -1,5 +1,5 @@
 import os
-import model_management
+from comfy import model_management
 import torch
 import comfy.utils
 import numpy as np
