@@ -1,0 +1,15 @@
+[project]
+name = "facerestore_cf"
+description = "This is a copy of [a/facerestore custom node](https://civitai.com/models/24690/comfyui-facerestore-node) with a bit of a change to support CodeFormer Fidelity parameter. These ComfyUI nodes can be used to restore faces in images similar to the face restore option in AUTOMATIC1111 webui.\nNOTE: To use this node, you need to download the face restoration model and face detection model from the 'Install models' menu."
+version = "1.0.0"
+license = "LICENSE"
+dependencies = ["opencv-python", "numpy", "torch", "torchvision", "addict", "future", "lmdb", "Pillow", "pyyaml", "requests", "scikit-image", "scipy", "tb-nightly", "tqdm", "yapf", "lpips", "gdown # supports downloading the large file from Google Drive", "# cmake", "# dlib", "# conda install -c conda-forge dlib"]
+
+[project.urls]
+Repository = "https://github.com/mav-rik/facerestore_cf"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "facerestore_cf"
+Icon = ""
