@@ -167,7 +167,16 @@ class FaceRestoreCFWithModel:
                     torch.cuda.empty_cache()
                 except Exception as error:
                     print(f'\tFailed inference for CodeFormer: {error}', file=sys.stderr)
-                    restored_face = tensor2img(cropped_face_t, rgb2bgr=True, min_max=(-1, 1))
+                    print(facerestore_model.__init__.__code__.co_varnames)
+                    try:
+                        with torch.no_grad():
+                            output = facerestore_model(cropped_face_t)[0]
+                            restored_face = tensor2img(output, rgb2bgr=True, min_max=(-1, 1))
+                        del output
+                        torch.cuda.empty_cache()
+                    except Exception as error:
+                        print(f'\tFailed inference for Fallback CodeFormer: {error}', file=sys.stderr)
+                        restored_face = tensor2img(output, rgb2bgr=True, min_max=(-1, 1))
 
                 restored_face = restored_face.astype('uint8')
                 self.face_helper.add_restored_face(restored_face)
