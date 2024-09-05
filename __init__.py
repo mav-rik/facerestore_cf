@@ -12,6 +12,7 @@ from comfy_extras.chainner_models import model_loading
 import folder_paths
 import sys
 from custom_nodes.facerestore_cf.basicsr.utils.registry import ARCH_REGISTRY
+from custom_nodes.facerestore_cf.facelib.parsing.gpen_model import FullGenerator
 # import codeformer_arch
 
 dir_facerestore_models = os.path.join(folder_paths.models_dir, "facerestore_models")
@@ -296,6 +297,13 @@ class FaceRestoreModelLoader:
             codeformer_net.load_state_dict(checkpoint)
             out = codeformer_net.eval()  
             return (out, )
+        elif "GPEN-BFR" in model_name.upper():
+            model_path = folder_paths.get_full_path("facerestore_models", model_name)
+            pretrained_dict = torch.load(model_path, map_location=torch.device('cpu'))
+            model = FullGenerator(size=512, style_dim=512, n_mlp=8, device=model_management.get_torch_device())
+            model.load_state_dict(pretrained_dict)
+            model.eval()
+            return (model, )
         else:
             model_path = folder_paths.get_full_path("facerestore_models", model_name)
             sd = comfy.utils.load_torch_file(model_path, safe_load=True)
