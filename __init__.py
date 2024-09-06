@@ -299,8 +299,13 @@ class FaceRestoreModelLoader:
             return (out, )
         elif "GPEN-BFR" in model_name.upper():
             model_path = folder_paths.get_full_path("facerestore_models", model_name)
-            pretrained_dict = torch.load(model_path, map_location=torch.device('cpu'))
-            model = FullGenerator(size=512, style_dim=512, n_mlp=8, device=model_management.get_torch_device())
+            pretrained_dict = comfy.utils.load_torch_file(model_path, safe_load=True)
+
+            s = 512
+            if "GPEN-BFR-256" in model_name.upper():
+                s = 256
+
+            model = FullGenerator(size=s, style_dim=512, n_mlp=8, device=model_management.get_torch_device())
             model.load_state_dict(pretrained_dict)
             model.eval()
             return (model, )
