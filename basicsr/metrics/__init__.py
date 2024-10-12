@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from custom_nodes.facerestore_cf.basicsr.utils.registry import METRIC_REGISTRY
+from basicsr.utils.registry import METRIC_REGISTRY
 from .psnr_ssim import calculate_psnr, calculate_ssim
 
 __all__ = ['calculate_psnr', 'calculate_ssim']

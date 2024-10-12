@@ -5,7 +5,7 @@ import os
 import queue
 import threading
 import torch
-from custom_nodes.facerestore_cf.basicsr.utils.download_util import load_file_from_url
+from basicsr.utils.download_util import load_file_from_url
 from torch.nn import functional as F
 
 # ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

@@ -6,7 +6,7 @@ import torch
 import yaml  # for torch hub
 from torch import nn
 
-from custom_nodes.facerestore_cf.facelib.detection.yolov5face.models.common import (
+from facelib.detection.yolov5face.models.common import (
     C3,
     NMS,
     SPP,
@@ -20,10 +20,10 @@ from custom_nodes.facerestore_cf.facelib.detection.yolov5face.models.common impo
     ShuffleV2Block,
     StemBlock,
 )
-from custom_nodes.facerestore_cf.facelib.detection.yolov5face.models.experimental import CrossConv, MixConv2d
-from custom_nodes.facerestore_cf.facelib.detection.yolov5face.utils.autoanchor import check_anchor_order
-from custom_nodes.facerestore_cf.facelib.detection.yolov5face.utils.general import make_divisible
-from custom_nodes.facerestore_cf.facelib.detection.yolov5face.utils.torch_utils import copy_attr, fuse_conv_and_bn
+from facelib.detection.yolov5face.models.experimental import CrossConv, MixConv2d
+from facelib.detection.yolov5face.utils.autoanchor import check_anchor_order
+from facelib.detection.yolov5face.utils.general import make_divisible
+from facelib.detection.yolov5face.utils.torch_utils import copy_attr, fuse_conv_and_bn
 
 
 class Detect(nn.Module):

@@ -4,8 +4,8 @@ import torch
 from os import path as osp
 from torch.nn import functional as F
 
-from custom_nodes.facerestore_cf.basicsr.data.transforms import mod_crop
-from custom_nodes.facerestore_cf.basicsr.utils import img2tensor, scandir
+from basicsr.data.transforms import mod_crop
+from basicsr.utils import img2tensor, scandir
 
 
 def read_img_seq(path, require_mod_crop=False, scale=1):

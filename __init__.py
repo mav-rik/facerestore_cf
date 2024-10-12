@@ -1,17 +1,19 @@
 import os
+import sys
+repo_dir = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, repo_dir)
 from comfy import model_management
 import torch
 import comfy.utils
 import numpy as np
 import cv2
 import math
-from custom_nodes.facerestore_cf.facelib.utils.face_restoration_helper import FaceRestoreHelper
-from custom_nodes.facerestore_cf.facelib.detection.retinaface import retinaface
+from facelib.utils.face_restoration_helper import FaceRestoreHelper
+from facelib.detection.retinaface import retinaface
 from torchvision.transforms.functional import normalize
 from comfy_extras.chainner_models import model_loading
 import folder_paths
-import sys
-from custom_nodes.facerestore_cf.basicsr.utils.registry import ARCH_REGISTRY
+from basicsr.utils.registry import ARCH_REGISTRY
 # import codeformer_arch
 
 dir_facerestore_models = os.path.join(folder_paths.models_dir, "facerestore_models")

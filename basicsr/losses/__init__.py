@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-from custom_nodes.facerestore_cf.basicsr.utils import get_root_logger
-from custom_nodes.facerestore_cf.basicsr.utils.registry import LOSS_REGISTRY
+from basicsr.utils import get_root_logger
+from basicsr.utils.registry import LOSS_REGISTRY
 from .losses import (CharbonnierLoss, GANLoss, L1Loss, MSELoss, PerceptualLoss, WeightedTVLoss, g_path_regularize,
                      gradient_penalty_loss, r1_penalty)
 
