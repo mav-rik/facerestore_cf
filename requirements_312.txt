@@ -18,3 +18,4 @@ gdown # supports downloading the large file from Google Drive
 # cmake
 # dlib
 # conda install -c conda-forge dlib
+requirements.txt

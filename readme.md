@@ -19,7 +19,8 @@ git clone https://github.com/mav-rik/facerestore_cf.git
 
 If running the portable windows version of ComfyUI, run embedded_install.bat
 Windows users not running the portable version can run install.bat. Linux and mac users can run install.sh.
-If the install fails for whatever reason, you'll need to work out how to install opencv-python yourself (you'll get a cv2 not found error otherwise)
+If the install fails for whatever reason, you'll need to work out how to install opencv-python yourself (you'll get a cv2 not found error otherwise).
+If you are using Python3.12 or higher version, please use `requirements_312.txt`.
 
 
 
