@@ -3,7 +3,12 @@ import math
 import torch
 import torchvision
 import warnings
-from distutils.version import LooseVersion
+import sys
+if sys.version_info >= (3, 12):
+    from packaging.version import Version
+    LooseVersion = Version
+else:
+    from distutils.version import LooseVersion
 from itertools import repeat
 from torch import nn as nn
 from torch.nn import functional as F
