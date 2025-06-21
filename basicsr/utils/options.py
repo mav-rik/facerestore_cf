@@ -2,7 +2,7 @@ import yaml
 import time
 from collections import OrderedDict
 from os import path as osp
-from custom_nodes.facerestore_cf.basicsr.utils.misc import get_time_str
+from basicsr.utils.misc import get_time_str
 
 def ordered_yaml():
     """Support OrderedDict for yaml.

@@ -4,9 +4,9 @@ from torch import nn
 from copy import deepcopy
 import pathlib
 
-from custom_nodes.facerestore_cf.facelib.utils import load_file_from_url
-from custom_nodes.facerestore_cf.facelib.utils import download_pretrained_models
-from custom_nodes.facerestore_cf.facelib.detection.yolov5face.models.common import Conv
+from facelib.utils import load_file_from_url
+from facelib.utils import download_pretrained_models
+from facelib.detection.yolov5face.models.common import Conv
 
 from .retinaface.retinaface import RetinaFace
 from .yolov5face.face_detector import YoloDetector

@@ -1,5 +1,5 @@
 import torch.nn as nn
-from custom_nodes.facerestore_cf.basicsr.utils.registry import ARCH_REGISTRY
+from basicsr.utils.registry import ARCH_REGISTRY
 
 
 def conv3x3(inplanes, outplanes, stride=1):

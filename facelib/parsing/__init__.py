@@ -1,6 +1,6 @@
 import torch
 
-from custom_nodes.facerestore_cf.facelib.utils import load_file_from_url
+from facelib.utils import load_file_from_url
 from .bisenet import BiSeNet
 from .parsenet import ParseNet
 
